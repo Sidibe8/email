@@ -46,7 +46,7 @@ app.post('/send-email', async (req, res) => {
   // Configuration de l'email
   const mailOptions = {
     from: `"${name}" <${email}>`, // L'adresse de l'expéditeur avec le nom
-    to: ' ', // Adresse du destinataire
+    to: 'farotaibrahima@gmail.com', // Adresse du destinataire
     subject, // Sujet de l'email
     text, // Contenu de l'email
   };
