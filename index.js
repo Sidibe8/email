@@ -5,8 +5,10 @@ const cors = require('cors');
 
 // Création de l'application Express
 
-app.use(cors());
-
+app.use(cors({
+  origin: ["http://localhost:5500"],
+  credentials: true, // Autorise les cookies
+}));
 // Middleware pour parser le JSON des requêtes
 app.use(express.json());
 
