@@ -3,40 +3,39 @@ const app = express();
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 
-// Création de l'application Express
-
+// Configuration de CORS
 app.use(cors({
-  origin: ["http://localhost:5500"],
-  credentials: true, // Autorise les cookies
+  origin: "http://localhost:5500",
+  methods: "GET,POST,OPTIONS",
+  credentials: true,
 }));
+
 // Middleware pour parser le JSON des requêtes
 app.use(express.json());
 
 // Configuration du transporteur d'emails
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // Par exemple, 'gmail'
+  service: 'gmail', 
   auth: {
-    user: 'syoro4663@gmail.com', // Remplacez par votre email
-    pass: 'vprm ieer llsz ssoo', // Remplacez par votre mot de passe ou token d'application
+    user: 'syoro4663@gmail.com', // utilisez une variable d'environnement
+    pass: 'vprm ieer llsz ssoo' // utilisez une variable d'environnement
   },
 });
 
-
-
+// Pré-vol pour la route /send-email
+app.options('/send-email', cors());
 
 // Route pour envoyer un email
 app.post('/send-email', async (req, res) => {
   const { name, email, subject, text } = req.body;
 
-  // Configuration de l'email
   const mailOptions = {
-    from: `"${name}" <${email}>`, // L'adresse de l'expéditeur avec le nom
-    to: ' ', // Adresse du destinataire
-    subject, // Sujet de l'email
-    text, // Contenu de l'email
+    from: `"${name}" <${email}>`,
+    to: 'farotaibraima@example.com', // Adresse du destinataire
+    subject, 
+    text, 
   };
 
-  // Envoi de l'email
   try {
     await transporter.sendMail(mailOptions);
     res.status(200).send('Email envoyé avec succès!');
