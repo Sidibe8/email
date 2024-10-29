@@ -5,7 +5,7 @@ const cors = require('cors');
 // Création de l'application Express
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 // Middleware pour parser le JSON des requêtes
 app.use(express.json());
