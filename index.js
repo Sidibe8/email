@@ -5,11 +5,8 @@ const cors = require('cors');
 // Création de l'application Express
 const app = express();
 
-app.use(cors({
-    origin: '*', // Autoriser toutes les origines
-    methods: ['GET', 'POST'], // Méthodes autorisées
-    allowedHeaders: ['Content-Type'], // En-têtes autorisés
-  }));
+// Middleware CORS
+app.use(cors());
   
 
 // Middleware pour parser le JSON des requêtes
