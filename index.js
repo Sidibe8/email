@@ -1,11 +1,11 @@
 const express = require('express');
+const app = express();
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 // Création de l'application Express
-const app = express();
 
-app.use(cors({ origin: '*' }));
+app.use(cors());
 
 // Middleware pour parser le JSON des requêtes
 app.use(express.json());
