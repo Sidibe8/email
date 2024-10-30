@@ -19,14 +19,14 @@ async function sendEmail(name, email, message, subject) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'sowsalimata243@gmail.com',
-            pass: 'ankv dlwp oqhs anrj'
+          user: 'syoro4663@gmail.com', // Remplacez par votre email
+          pass: 'vprm ieer llsz ssoo', 
         }
     });
 
     let mailOptions = {
         from: email,
-        to: 'syoro4663@gmail.com',
+        to: 'farotaibrahima@gmail.com',
         subject: subject,
         text: message,
         replyTo: email
