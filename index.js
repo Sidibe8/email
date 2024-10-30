@@ -1,52 +1,55 @@
 const express = require('express');
-const cors = require('cors'); // Importer cors
-const nodemailer = require('nodemailer'); // Importer nodemailer
+const cors = require('cors');
+const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const app = express();
 
-// Middleware pour analyser les données JSON
+// Middleware for JSON data parsing
 app.use(bodyParser.json());
 
-// Configuration de CORS
-app.use(cors()); // Autoriser toutes les origines par défaut
+// CORS Configuration for specific origin and preflight response
+app.use(cors({
+    origin: 'http://127.0.0.1:5500', // Replace with the allowed origin
+    methods: ['POST', 'OPTIONS'],    // Allow specific methods
+    allowedHeaders: ['Content-Type']  // Allow necessary headers
+}));
 
-// Fonction d'envoi d'email
+// Function to send email
 async function sendEmail(name, email, message, subject) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'sowsalimata243@gmail.com', // Remplacez par votre email
-            pass: 'ankv dlwp oqhs anrj' // Remplacez par votre mot de passe d'application
+            user: 'sowsalimata243@gmail.com',
+            pass: 'ankv dlwp oqhs anrj'
         }
     });
 
     let mailOptions = {
         from: email,
         to: 'farotaibrahima@gmail.com',
-        subject:subject,
+        subject: subject,
         text: message,
-        replyTo: email // Adresse email à laquelle les réponses doivent être envoyées
+        replyTo: email
     };
 
     try {
         let info = await transporter.sendMail(mailOptions);
-        console.log('Email envoyé : ' + info.response);
-        return 'Email envoyé avec succès';
+        console.log('Email sent: ' + info.response);
+        return 'Email sent successfully';
     } catch (error) {
-        console.error('Erreur lors de l\'envoi de l\'email :', error);
-        return 'Erreur lors de l\'envoi de l\'email';
+        console.error('Error sending email:', error);
+        return 'Error sending email';
     }
 }
 
-// Route pour recevoir les données du formulaire et envoyer un email
+// Route to receive form data and send email
 app.post('/send-email', async (req, res) => {
-    const { name, email, message, subject } = req.body; // Récupérer les données de la requête
-    console.log('email', email);
+    const { name, email, message, subject } = req.body;
     const responseMessage = await sendEmail(name, email, message, subject);
-    res.send(responseMessage); // Retourner un message de succès ou d'erreur
+    res.send(responseMessage);
 });
 
-// Démarrer le serveur
+// Start the server
 app.listen(8000, () => {
-    console.log('Serveur démarré sur le port 3000');
+    console.log('Server running on port 8000');
 });
