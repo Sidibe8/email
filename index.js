@@ -1,52 +1,52 @@
 const express = require('express');
+const cors = require('cors'); // Importer cors
+const nodemailer = require('nodemailer'); // Importer nodemailer
+const bodyParser = require('body-parser');
 const app = express();
-const nodemailer = require('nodemailer');
-const cors = require('cors');
+
+// Middleware pour analyser les données JSON
+app.use(bodyParser.json());
 
 // Configuration de CORS
-app.use(cors({
-  origin: "http://localhost:5500",
-  methods: "GET,POST,OPTIONS",
-  credentials: true,
-}));
+app.use(cors()); // Autoriser toutes les origines par défaut
 
-// Middleware pour parser le JSON des requêtes
-app.use(express.json());
+// Fonction d'envoi d'email
+async function sendEmail(name, email, message) {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'sowsalimata243@gmail.com', // Remplacez par votre email
+            pass: 'ankv dlwp oqhs anrj' // Remplacez par votre mot de passe d'application
+        }
+    });
 
-// Configuration du transporteur d'emails
-const transporter = nodemailer.createTransport({
-  service: 'gmail', 
-  auth: {
-    user: 'syoro4663@gmail.com', // utilisez une variable d'environnement
-    pass: 'vprm ieer llsz ssoo' // utilisez une variable d'environnement
-  },
-});
+    let mailOptions = {
+        from: email,
+        to: 'farotaibrahima@gmail.com',
+        subject: `service`,
+        text: message,
+        replyTo: email // Adresse email à laquelle les réponses doivent être envoyées
+    };
 
-// Pré-vol pour la route /send-email
-app.options('/send-email', cors());
+    try {
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email envoyé : ' + info.response);
+        return 'Email envoyé avec succès';
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi de l\'email :', error);
+        return 'Erreur lors de l\'envoi de l\'email';
+    }
+}
 
-// Route pour envoyer un email
+// Route pour recevoir les données du formulaire et envoyer un email
 app.post('/send-email', async (req, res) => {
-  const { name, email, subject, text } = req.body;
-
-  const mailOptions = {
-    from: `"${name}" <${email}>`,
-    to: 'farotaibraima@example.com', // Adresse du destinataire
-    subject, 
-    text, 
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).send('Email envoyé avec succès!');
-  } catch (error) {
-    console.error('Erreur lors de l\'envoi de l\'email:', error);
-    res.status(500).send('Erreur lors de l\'envoi de l\'email.');
-  }
+    const { name, email, message } = req.body; // Récupérer les données de la requête
+    console.log('email', email);
+    const responseMessage = await sendEmail(name, email, message);
+    res.send(responseMessage); // Retourner un message de succès ou d'erreur
 });
 
 // Démarrer le serveur
-const PORT = 8000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+    console.log('Serveur démarré sur le port 3000');
 });
