@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors()); // Autoriser toutes les origines par défaut
 
 // Fonction d'envoi d'email
-async function sendEmail(name, email, message) {
+async function sendEmail(name, email, message, subject) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -23,7 +23,7 @@ async function sendEmail(name, email, message) {
     let mailOptions = {
         from: email,
         to: 'farotaibrahima@gmail.com',
-        subject: `service`,
+        subject:subject,
         text: message,
         replyTo: email // Adresse email à laquelle les réponses doivent être envoyées
     };
@@ -40,13 +40,13 @@ async function sendEmail(name, email, message) {
 
 // Route pour recevoir les données du formulaire et envoyer un email
 app.post('/send-email', async (req, res) => {
-    const { name, email, message } = req.body; // Récupérer les données de la requête
+    const { name, email, message, subject } = req.body; // Récupérer les données de la requête
     console.log('email', email);
-    const responseMessage = await sendEmail(name, email, message);
+    const responseMessage = await sendEmail(name, email, message, subject);
     res.send(responseMessage); // Retourner un message de succès ou d'erreur
 });
 
 // Démarrer le serveur
-app.listen(3000, () => {
+app.listen(8000, () => {
     console.log('Serveur démarré sur le port 3000');
 });
