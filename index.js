@@ -26,7 +26,7 @@ async function sendEmail(name, email, message, subject) {
 
     let mailOptions = {
         from: email,
-        to: 'farotaibrahima@gmail.com',
+        to: 'syoro4663@gmail.com',
         subject: subject,
         text: message,
         replyTo: email
